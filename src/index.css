@@ -1,0 +1,105 @@
+:root {
+  --hud-cyan: #00f0ff;
+  --hud-red: #ff2a2a;
+  --hud-amber: #ffa500;
+  --hud-green: #39ff14;
+  --bg-dark: #050a0f;
+  --bg-panel: rgba(0, 20, 40, 0.85);
+  --border-glow: rgba(0, 240, 255, 0.4);
+  font-family: 'Courier New', Courier, monospace;
+  color-scheme: dark;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--hud-cyan);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 240, 255, 0.03) 2px,
+    rgba(0, 240, 255, 0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Corner HUD decoration */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(0,240,255,0.08) 0%, transparent 25%),
+    linear-gradient(225deg, rgba(0,240,255,0.08) 0%, transparent 25%),
+    linear-gradient(315deg, rgba(0,240,255,0.08) 0%, transparent 25%),
+    linear-gradient(45deg, rgba(0,240,255,0.08) 0%, transparent 25%);
+  pointer-events: none;
+  z-index: 999;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* Glowing text */
+.glow {
+  text-shadow: 0 0 8px var(--hud-cyan), 0 0 20px var(--hud-cyan);
+}
+
+.glow-red {
+  text-shadow: 0 0 8px var(--hud-red), 0 0 20px var(--hud-red);
+  color: var(--hud-red);
+}
+
+.glow-green {
+  text-shadow: 0 0 8px var(--hud-green), 0 0 20px var(--hud-green);
+  color: var(--hud-green);
+}
+
+.glow-amber {
+  text-shadow: 0 0 8px var(--hud-amber), 0 0 20px var(--hud-amber);
+  color: var(--hud-amber);
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  49% { opacity: 1; }
+  50% { opacity: 0; }
+  99% { opacity: 0; }
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.blink {
+  animation: blink 1s step-start infinite;
+}
